@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>getnamelist</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/css.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- 标题 -->
+        <div class="row head">
+            <h2 class="text-center">点名器</h2>
+        </div>
+
+        <div class="row content">
+            <div class="col-md-6 col-sm-6 col-md-push-3 col-sm-push-3">
+                <!-- 名单显示 -->
+                <div class="list">
+                    <div class="mask-1"></div>
+                    <!-- <div class="arrow"><img src="..." alt=""></div> -->
+                    <ul></ul>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="row ">
+                    <!-- 添加班级 -->
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">添加班级</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">添加班级</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="">
+                                        <div class="form-group">
+                                            <label for="grade-name">班级名称:</label>
+                                            <input id="grade-name" class="form-control" type="text" placeholder="输入班级名称">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="grade-name-list">班级名单(每个名字占一行):</label>
+                                            <textarea id="grade-name-list" class="form-control" placeholder="每个名字占一行" rows="14"></textarea>
+                                        </div>
+
+                                        <input id="confirm-namelist" type="button" class="btn btn-primary" value="确认添加">
+                                    </form>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭窗口</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="row grade-select">
+                    <div class="operation">
+                        <div class="col-md-12 text-center opt-col">
+                            <button class="grade1 btn-sm btn-info">班级1</button>
+                            <button class="grade2 btn-sm btn-info">班级2</button>
+                            <button class="grade3 btn-sm btn-info">班级3</button>
+                            <button class="grade1 btn-sm btn-info">班级1</button>
+                            <button class="grade2 btn-sm btn-info">班级2</button>
+                            <button class="grade3 btn-sm btn-info">班级3</button>
+                            <button class="grade1 btn-sm btn-info">班级1</button>
+                            <button class="grade2 btn-sm btn-info">班级2</button>
+                            <button class="grade3 btn-sm btn-info">班级3</button>
+                            <button class="grade1 btn-sm btn-info">班级1</button>
+                            <button class="grade2 btn-sm btn-info">班级2</button>
+                            <button class="grade3 btn-sm btn-info">班级3</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <button class="running btn btn-success">滚动</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        var names;
+        var path = "./data/namelistGrade1.txt"; //默认班级
+        //读取文件中的名单,将名单加入li中
+        function readNameList(filePath) {
+            var ajx = new XMLHttpRequest();
+            ajx.open("get", filePath, true);
+
+            ajx.onreadystatechange = function() {
+                if (ajx.readyState != 4) {
+                    // alert(ajx.status);
+                    return;
+                }
+                if (ajx.readyState == 4 && ajx.status == 200) {
+                    // alert(ajx.responseText);
+                    names = ajx.responseText.split("\n");
+                    for (var i = 0; i < names.length; i++) {
+                        $(".list ul").append("<li>" + (names[i]) + "</li>");
+                    }
+                    for (var j = 0; j < 6; j++) { //多加6个名字,填空白
+                        $(".list ul").append("<li>" + (names[j]) + "</li>");
+                    }
+                }
+            }
+            ajx.send();
+        }
+
+        $(function() {
+            readNameList("./data/namelistGrade1.txt");
+
+            $(".grade1").click(function() {
+                $("ul li").remove();
+                readNameList("./data/namelistGrade1.txt");
+            });
+
+            $(".grade2").click(function() {
+                $("ul li").remove();
+                readNameList("./data/namelistGrade2.txt");
+            });
+
+            $(".grade3").click(function() {
+                $("ul li").remove();
+                readNameList("./data/namelistGrade3.txt");
+            });
+
+            $(".running").click(function() {
+                var timer1, timer2;
+                var loop = 0;
+                var $ul = $(".list ul");
+                var initPosition, targetPosition;
+                var allHeight = $("ul li").height() * names.length;
+                var liHeight = $("ul li").height();
+                var rdmNum = parseInt(Math.random() * 1000);
+                console.log(rdmNum);
+                var scrollValue = -liHeight * rdmNum % allHeight;
+                console.log(scrollValue);
+                $ul.css("transition", "transform 1s linear");
+                $ul.css("transform", "translate3d(0," + (-allHeight) + "px,0)");
+
+                $ul.bind("transitionend", function() {
+                    if (loop <= 1) {
+                        $ul.css("transition", "none");
+                        $ul.css("transform", "translate3d(0,0,0)");
+                    }
+
+                    setTimeout(() => {
+                        if (loop == 0) {
+                            $ul.css("transition", "transform 1s linear");
+                            $ul.css("transform", "translate3d(0," + (-allHeight) + "px,0)");
+                            loop++;
+                        } else if (loop == 1) {
+                            $ul.css("transition", "transform 5s ease-out");
+                            $ul.css("transform", "translate3d(0," + (scrollValue) + "px,0)");
+                            loop++;
+                            return false;
+                        }
+                    }, 1);
+
+                });
+            });
+
+            $(".btn2").click(function() {
+                $(".list ul").css("transform", "translate3d(0,-1000px,0)");
+            });
+
+            //添加班级按键点击事件
+            $("#confirm-namelist").click(function() {
+                alert(123)
+            });
+        })
+    </script>
+
+</body>
+
+</html>

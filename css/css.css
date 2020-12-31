@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    background-color: rgb(49, 49, 49);
+    width: 100%;
+    height: 100%;
+}
+
+.head h2 {
+    color: #555353;
+    font-weight: bold;
+}
+
+.list {
+    width: 100%;
+    height: 250px;
+    margin: 30px auto;
+    text-align: center;
+    background-color: aquamarine;
+    position: relative;
+    overflow: hidden;
+    background-image: linear-gradient(0deg, rgb(46, 45, 45), rgb(155, 155, 155));
+    border-radius: 20%;
+}
+
+.list .mask-1 {
+    width: 100%;
+    height: 250px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(0deg, rgba(10, 10, 10, .8), rgba(247, 247, 247, 0.1), rgba(14, 14, 14, .8));
+    z-index: 999;
+}
+
+.list ul {
+    width: 70%;
+    margin: 0 auto;
+    /* transform: translate3d(0,0,0); */
+    /* transition: transform 5s linear; */
+    /* transition: none; */
+    filter: blur(0.4px);
+    /*高斯模糊滤镜 */
+}
+
+.list ul li {
+    height: 50px;
+    list-style: none;
+    font-size: 25px;
+    background-color: rgb(158, 163, 241);
+    line-height: 50px;
+    opacity: .75;
+    filter: alpha(opacity=75);
+}
+
+.list ul li:nth-child(odd) {
+    background-color: rgb(126, 134, 241);
+}
+
+.list .arrow {
+    width: 50px;
+    height: 50px;
+    background-color: brown;
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    margin-top: -25px;
+}
+
+.operation {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    align-self: center;
+    justify-content: space-evenly;
+}
+
+button {
+    cursor: pointer;
+}
+
+.running {
+    width: 30%;
+}
+
+.content {
+    overflow: hidden;
+}
+
+.opt-col {
+    margin: 10px auto;
+}
+
+
+/* 添加班级 */
+
+#grade-name-list {
+    resize: none;
+}
